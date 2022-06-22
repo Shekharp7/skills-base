@@ -21,7 +21,7 @@ public class ClariseMainApplication {
 		registrationBean.setFilter(new AuthorizationFilter());
 		registrationBean.addUrlPatterns("/api/*");
 		registrationBean.addUrlPatterns("/v1/*");
-//		registrationBean.addUrlPatterns("/employees/user/test");
+		registrationBean.addUrlPatterns("/employees/user/test");
 //		registrationBean.addUrlPatterns("/skills");
 //		registrationBean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 		return registrationBean;
