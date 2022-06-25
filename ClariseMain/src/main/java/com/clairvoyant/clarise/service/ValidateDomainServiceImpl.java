@@ -71,10 +71,11 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
                 String query = insertQuery;
                 jdbcTemplate.update(query, uuidAsString,idToken.getEmail(),idToken.getFullName(),role, idToken.getPicture());
             } else if (
-                    !employee.getPicture().equals(idToken.getPicture()) || !employee.getEmail().equals(idToken.getEmail())
+                    employee.getPicture() == null || !employee.getPicture().equals(idToken.getPicture()) || !employee.getEmail().equals(idToken.getEmail())
                             || !employee.getName().equals(idToken.getFullName())) {
                 employee.setEmail(idToken.getEmail());
                 employee.setPicture(idToken.getPicture());
+                employee.setName(idToken.getFullName());
                 employeeRepository.save(employee);
             }
             httpResponse.sendRedirect(authorizedUrl + token);
