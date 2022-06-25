@@ -38,6 +38,9 @@ public class Employee implements Serializable {
     @Column(name = "email", unique = true, length = 45)
     private String email;
 
+    @Column(name = "picture", unique = true, length = 100)
+    private String picture;
+
     @Column(name = "role", length = 45)
     private String role;
 

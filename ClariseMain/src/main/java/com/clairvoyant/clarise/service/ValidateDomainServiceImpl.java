@@ -52,7 +52,6 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
 
         DecodedJWT jwt = JWT.decode(idToken.getTokenValue());
         //fixedDomain = clairvoyantsoft.com;
-        System.out.println(jwt);
         if(fixedDomain.equals(jwt.getClaim("hd").asString()))
         {
             //if domain is authorized redirect to homepage
@@ -60,7 +59,6 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
             String uuidAsString = uuid.toString();
             //defaultRole = ROLE_USER
             String role = defaultRole;
-            //superAdminId = clarise@clairvoyantsoft.com
             if(superAdminId.equals(idToken.getEmail()))
             {
                 // superAdminRole = ROLE_SUPERADMIN
@@ -68,16 +66,18 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
             }
             JwtUtil customToken = new JwtUtil();
             String token=customToken.generateToken(idToken.getTokenValue(),role);
-            System.out.println("Custom token---------------------"+token + " Custom token end");
             Employee employee = employeeRepository.findByEmail(idToken.getEmail());
             if(employee==null){
                 String query = insertQuery;
-                jdbcTemplate.update(query, uuidAsString,idToken.getEmail(),idToken.getFullName(),role);
+                jdbcTemplate.update(query, uuidAsString,idToken.getEmail(),idToken.getFullName(),role, idToken.getPicture());
+            } else if (
+                    !employee.getPicture().equals(idToken.getPicture()) || !employee.getEmail().equals(idToken.getEmail())
+                            || !employee.getName().equals(idToken.getFullName())) {
+                employee.setEmail(idToken.getEmail());
+                employee.setPicture(idToken.getPicture());
+                employeeRepository.save(employee);
             }
-            //httpResponse.sendRedirect(authorizedUrl + idToken.getTokenValue()+"&role="+role);
-            httpResponse.setStatus(HttpServletResponse.SC_OK);
-            httpResponse.getWriter().write(token);
-            httpResponse.getWriter().flush();
+            httpResponse.sendRedirect(authorizedUrl + token);
         }
         else{
             //if domain is unauthorized redirect to login page again
