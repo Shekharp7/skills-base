@@ -52,6 +52,7 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
 
         DecodedJWT jwt = JWT.decode(idToken.getTokenValue());
         //fixedDomain = clairvoyantsoft.com;
+        System.out.println(jwt);
         if(fixedDomain.equals(jwt.getClaim("hd").asString()))
         {
             //if domain is authorized redirect to homepage
@@ -67,14 +68,16 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
             }
             JwtUtil customToken = new JwtUtil();
             String token=customToken.generateToken(idToken.getTokenValue(),role);
-            //System.out.println("Custom token---------------------"+token + " Custom token end");
+            System.out.println("Custom token---------------------"+token + " Custom token end");
             Employee employee = employeeRepository.findByEmail(idToken.getEmail());
-            if(employee ==null){
+            if(employee==null){
                 String query = insertQuery;
                 jdbcTemplate.update(query, uuidAsString,idToken.getEmail(),idToken.getFullName(),role);
             }
             //httpResponse.sendRedirect(authorizedUrl + idToken.getTokenValue()+"&role="+role);
-            httpResponse.sendRedirect(authorizedUrl + token);
+            httpResponse.setStatus(HttpServletResponse.SC_OK);
+            httpResponse.getWriter().write(token);
+            httpResponse.getWriter().flush();
         }
         else{
             //if domain is unauthorized redirect to login page again
