@@ -65,7 +65,6 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
                 role = superAdminRole;
             }
             JwtUtil customToken = new JwtUtil();
-            String token=customToken.generateToken(idToken.getTokenValue(),role);
             Employee employee = employeeRepository.findByEmail(idToken.getEmail());
             if(employee==null){
                 String query = insertQuery;
@@ -78,7 +77,13 @@ public class ValidateDomainServiceImpl implements ValidateDomainService {
                 employee.setName(idToken.getFullName());
                 employeeRepository.save(employee);
             }
-            httpResponse.sendRedirect(authorizedUrl + token);
+            if (employee!=null) {
+                String token=customToken.generateToken(idToken.getTokenValue(),role, employee.getId());
+                httpResponse.sendRedirect(authorizedUrl + token);
+            } else {
+                String token=customToken.generateToken(idToken.getTokenValue(),role);
+                httpResponse.sendRedirect(authorizedUrl + token);
+            }
         }
         else{
             //if domain is unauthorized redirect to login page again

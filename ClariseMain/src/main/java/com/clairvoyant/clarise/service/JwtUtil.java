@@ -1,10 +1,20 @@
 package com.clairvoyant.clarise.service;
 
 import io.jsonwebtoken.Jwts;
+
+import java.time.Instant;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class JwtUtil {
+
+    public String generateToken(String token, String role, String eId) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role",role);
+        claims.put("id", eId);
+        return createToken(claims, token);
+    }
 
     public String generateToken(String token, String role) {
         Map<String, Object> claims = new HashMap<>();
@@ -13,7 +23,7 @@ public class JwtUtil {
     }
 
     private String createToken(Map<String, Object> claims, String token) {
-        return Jwts.builder().setClaims(claims).setSubject(token).compact();
+        return Jwts.builder().setClaims(claims).setSubject(token).setExpiration(Date.from(Instant.now())).compact();
     }
 
 }
