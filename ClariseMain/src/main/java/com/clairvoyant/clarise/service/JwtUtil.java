@@ -3,6 +3,8 @@ package com.clairvoyant.clarise.service;
 import io.jsonwebtoken.Jwts;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +25,12 @@ public class JwtUtil {
     }
 
     private String createToken(Map<String, Object> claims, String token) {
-        return Jwts.builder().setClaims(claims).setSubject(token).setExpiration(Date.from(Instant.now())).compact();
+        LocalDateTime localDateTime = LocalDateTime.now().plusDays(14);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(token)
+                .setExpiration(Date.from(localDateTime.toInstant(ZoneOffset.UTC)))
+                .compact();
     }
 
 }
