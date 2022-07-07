@@ -40,4 +40,7 @@ public class EmployeeSkill implements Serializable {
     @Column(name = "rating")
     private String rating;
 
+    @Column(name = "certified")
+    private Boolean certified = false;
+
 }

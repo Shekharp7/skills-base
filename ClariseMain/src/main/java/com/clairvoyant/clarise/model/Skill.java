@@ -30,6 +30,9 @@ public class Skill implements Serializable {
     @Column(name = "skill_name")
     private String skillName;
 
+    @Column(name = "trending")
+    private Boolean trending = false;
+
     //relationship with Employee_Skills
     @OneToMany(cascade = {CascadeType.REFRESH , CascadeType.PERSIST ,
             CascadeType.DETACH , CascadeType.MERGE})
