@@ -32,22 +32,6 @@ public class Skill implements Serializable {
 
     @Column(name = "trending")
     private Boolean trending = false;
-
-    //relationship with Employee_Skills
-    @OneToMany(cascade = {CascadeType.REFRESH , CascadeType.PERSIST ,
-            CascadeType.DETACH , CascadeType.MERGE})
-    @JoinColumn(name = "skill_id")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private List<EmployeeSkill> employeeSkills;
-
-
-    public void addEmployeeSkills(EmployeeSkill empSkill){
-        if(employeeSkills == null){
-            employeeSkills = new ArrayList<>();
-        }
-
-        employeeSkills.add(empSkill);
-    }
 }
 
 
