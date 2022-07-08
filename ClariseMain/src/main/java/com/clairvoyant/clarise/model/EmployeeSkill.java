@@ -38,7 +38,7 @@ public class EmployeeSkill implements Serializable {
     private Skill skill;
 
     @Column(name = "rating")
-    private String rating;
+    private double rating;
 
     @Column(name = "certified")
     private Boolean certified = false;

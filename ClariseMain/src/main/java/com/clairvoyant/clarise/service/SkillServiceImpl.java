@@ -49,6 +49,7 @@ public class SkillServiceImpl implements SkillService {
         empSkill.setEmployee(emp.get());
         empSkill.setSkill(tempSkill.get());
         empSkill.setRating(employeeSkill.getRating());
+        empSkill.setCertified(employeeSkill.getCertified());
 
         emp.get().addEmployeeSkills(empSkill);
 
